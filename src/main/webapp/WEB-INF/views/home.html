@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<style>
+    h3 {
+        background-color: blue;
+        color: white;
+        padding: 10px 0 10px 20px;
+    }
+
+    footer {
+        margin: 10px 0;
+    }
+
+    #customers {
+        font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    #listEmployee td, #listEmployee th {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+
+    #listEmployee tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    #listEmployee tr:hover {
+        background-color: #ddd;
+    }
+
+    #listEmployee th {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: left;
+        background-color: #4CAF50;
+        color: white;
+    }
+
+    input[type=text], input[type=email] {
+        width: 100%;
+        padding: 12px 0;
+        margin: 8px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    input[type=submit] {
+        width: 100px;
+        height: 20px;
+        background-color: #4CAF50;
+        color: white;
+        padding: 14px 20px;
+        margin: 8px 0;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        text-align: center;
+    }
+
+    input[type=submit]:hover {
+        background-color: #45a049;
+    }
+
+    #form {
+        width: 500px;
+        border-radius: 5px;
+        background-color: #f2f2f2;
+        padding: 20px;
+    }
+
+    .notify span {
+        font-size: 15px;
+        color: blue;
+    }
+
+    table tr:not(:first-child) {
+        counter-increment: rowNumber;
+    }
+
+    table tr:not(:first-child) td:first-child::before {
+        content: counter(rowNumber);
+        min-width: 1em;
+        margin-right: 0.5em;
+    }
+
+    /*////////////*/
+    .price-content {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 0 10px;
+    }
+
+    .card {
+        width: 400px;
+        background-color: #fff;
+        border-radius: 5px;
+        padding: 20px;
+        box-shadow: 0 9px 20px 0 rgba(14, 88, 48, 0.10);
+    }
+    h4{
+        font-size: 18px;
+        font-weight: 500;
+        color: #000;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    label {
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    p {
+        font-size: 16px;
+        font-weight: 600;
+    }
+
+    .range-slider {
+        width: 400px;
+        position: relative;
+        margin: 15px 0 30px 0;
+    }
+
+    .range-fill {
+        height: 6px;
+        background-color: #36b37e;
+        position: absolute;
+        z-index: 1;
+    }
+
+    input[type="range"] {
+        -webkit-appearance: none;
+        width: 100%;
+        background: transparent;
+        position: absolute;
+        left: 0;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        height: 15px;
+        width: 15px;
+        border-radius: 50%;
+        background-color: #36b37e;
+        cursor: pointer;
+        margin-top: -5px;
+        position: relative;
+        z-index: 1;
+    }
+
+    input[type="range"]::-webkit-slider-runnable-track {
+        width: 100%;
+        height: 5px;
+        background: #e8e8e8;
+        border-radius: 3px;
+        border: none;
+
+    }
+
+
+</style>
+<body>
+<h3>List</h3>
+<hr>
+<div class="card">
+    <h5>Price Range Slider </h5>
+    <div class="price-content">
+        <div>
+            <label>Min</label>
+            <p id="min-value">$50</p>
+        </div>
+
+        <div>
+            <label>Max</label>
+            <p id="max-value">$500</p>
+        </div>
+    </div>
+    <div class="range-slider">
+        <div class="range-fill"></div>
+        <input
+                type="range"
+                class="min-price"
+                value="20000"
+                min="10000"
+                max="20000000"
+                step="10000"
+        />
+        <input
+                type="range"
+                class="max-price"
+                value="2500000"
+                min="10000"
+                max="20000000"
+                step="10000"
+        />
+    </div>
+</div>
+<form th:action="@{/employee/check}" method="post">
+    <input type="hidden" value="minValue" name="min" id="min"/>
+    <input type="hidden" value="maxValue" name="max" id="max"/>
+    <input type="submit" value="Check">
+</form>
+<script>
+    let minValue = document.getElementById("min-value");
+    let maxValue = document.getElementById("max-value");
+
+
+
+    function validateRange(){
+        let minPrice = parseInt(inputElement[0].value);
+        let maxPrice = parseInt(inputElement[1].value);
+
+        if (minPrice > maxPrice){
+            let tempValue = maxPrice;
+            maxPrice = minPrice;
+            minPrice = tempValue;
+        }
+
+        document.getElementById("min").value = minPrice;
+        document.getElementById("max").value = maxPrice;
+
+        minValue.innerHTML = "$" + minPrice;
+        maxValue.innerHTML = "$" + maxPrice;
+    }
+    const inputElement = document.querySelectorAll("input");
+    validateRange();
+    inputElement.forEach((element) => {
+        element.addEventListener("input",validateRange)
+    });
+</script>
+<a href="/employee/create">Create new employee</a><br/>
+<form th:action="@{/employee/search}" method="post">
+    <label for="search">Search</label>
+    <input id="search" type="search" name="search" placeholder="search"/>
+    <input type="submit" value="Search"/>
+</form>
+<table id="listEmployee">
+    <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Salary</th>
+        <th>action</th>
+    </tr>
+    <tr th:each="list : ${listEmployee}">
+        <td></td>
+        <td th:text="${list.name}"></td>
+        <td th:text="${list.salary}"></td>
+        <td>
+            <a th:href="@{/employee/{id}/edit(id=${list.id})}">Edit</a>
+            <span>|</span>
+            <a th:href="@{/employee/{id}/delete(id=${list.id})}">Delete</a>
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>
