@@ -243,6 +243,14 @@
     <input id="search" type="search" name="search" placeholder="search"/>
     <input type="submit" value="Search"/>
 </form>
+<hr>
+<form th:action="@{/employee/filter}" method="post">
+    <select name="option">
+        <option value="ascending">ascending</option>
+        <option value="descending">descending</option>
+    </select>
+    <input type="submit" value="filter">
+</form>
 <table id="listEmployee">
     <tr>
         <th>#</th>

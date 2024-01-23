@@ -16,4 +16,7 @@ public interface IEmployeeRepository extends JpaRepository<Employee,Long> {
 
     List<Employee> findAllBySalaryBetween(double salary, double salary2);
 
+    List<Employee> findAllByOrderBySalaryDesc();
+    List<Employee> findAllByOrderBySalaryAsc();
+
 }

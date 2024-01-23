@@ -39,6 +39,19 @@ public class ControllerEmployee {
         modelAndView.addObject("listEmployee",iEmployeeRepository.findAllBySalaryBetween(min,max));
         return modelAndView;
     }
+    @PostMapping("/filter")
+    public ModelAndView check(@RequestParam(name = "option") String option){
+        ModelAndView modelAndView = new ModelAndView("/home");
+        switch (option){
+            case "ascending":
+                modelAndView.addObject("listEmployee",iEmployeeRepository.findAllByOrderBySalaryAsc());
+                break;
+            case "descending":
+                modelAndView.addObject("listEmployee",iEmployeeRepository.findAllByOrderBySalaryDesc());
+                break;
+        }
+        return modelAndView;
+    }
 
     @GetMapping("/create")
     public ModelAndView create() {
